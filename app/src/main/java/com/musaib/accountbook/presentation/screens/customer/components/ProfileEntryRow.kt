@@ -19,6 +19,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,23 +29,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.musaib.accountbook.data.TransactionViewModel
+import com.musaib.accountbook.data.viewModel.TransactionViewModel
 import com.musaib.accountbook.ui.theme.MainGreen
 import com.musaib.accountbook.ui.theme.MainRed
 import java.util.Date
+import androidx.compose.foundation.lazy.items
+
 @Composable
 fun ProfileEntryRow(
     modifier: Modifier = Modifier,
     viewModel: TransactionViewModel // Pass ViewModel here
 ) {
-    val transactions by viewModel.allTransactions.observeAsState(emptyList()) // Observe transactions
-
+    val transactions by viewModel.allTransactions.collectAsState() // Collect the state here
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        items(transactions) { transaction ->
+        // Ensure you are passing the List directly
+        items(transactions) { transaction -> // items expects a List, so pass the list of transactions
             OutlinedCard(
                 modifier = modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(corner = CornerSize(8.dp)),
@@ -112,16 +116,3 @@ fun ProfileEntryRow(
     }
 }
 
-
-@Preview(showBackground = true, showSystemUi = false)
-@Composable
-fun PreviewHomeScreen() {
-    ProfileEntryRow(
-        modifier = Modifier,
-        date = Date(),
-        time = Date(),
-        entryAmount = 300,
-        entryType = 1,
-        entryDescription = "Cash"
-    )
-}

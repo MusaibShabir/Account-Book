@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao {
-
     @Insert
     suspend fun insertTransaction(transaction: Transaction)
 

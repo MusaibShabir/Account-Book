@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.musaib.accountbook.data.TransactionViewModel
+import com.musaib.accountbook.data.viewModel.TransactionViewModel
 import com.musaib.accountbook.presentation.screens.customer.components.CustomerHeadCashRow
 import com.musaib.accountbook.presentation.screens.customer.components.ProfileEntryRow
 import com.musaib.accountbook.ui.theme.MainGreen
@@ -41,16 +41,15 @@ import com.musaib.accountbook.ui.theme.MainRed
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomerProfileScreen(
+fun CustomerTransactionScreen(
     modifier: Modifier = Modifier,
-    profileName: String,
     viewModel: TransactionViewModel // Add ViewModel parameter
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(text = profileName) },
+                title = { Text(text = "Musaib Shabir") },
                 navigationIcon = {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -114,11 +113,3 @@ fun CustomerProfileScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewCustomerProfileScreen() {
-    CustomerProfileScreen(
-        modifier = Modifier,
-        profileName = "Musaib Shabir"
-    )
-}

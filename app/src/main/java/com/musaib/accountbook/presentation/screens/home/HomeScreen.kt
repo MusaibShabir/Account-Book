@@ -25,10 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.musaib.accountbook.data.TransactionViewModel
+import androidx.navigation.NavController
+import com.musaib.accountbook.navigation.NavRoutes
 import com.musaib.accountbook.presentation.screens.home.components.CashRow
 import com.musaib.accountbook.presentation.screens.home.components.CustomerColumn
 
@@ -36,7 +36,7 @@ import com.musaib.accountbook.presentation.screens.home.components.CustomerColum
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: TransactionViewModel
+    navController: NavController
 ) {
     Scaffold(
         modifier = modifier
@@ -44,7 +44,7 @@ fun HomeScreen(
         floatingActionButton = {
 
             FloatingActionButton(
-                onClick = {},
+                onClick = { navController.navigate(NavRoutes.ADD_CUSTOMER)},
             ) {
                 Row(
                     modifier = Modifier
@@ -99,10 +99,4 @@ fun HomeScreen(
             CustomerColumn(modifier = modifier)
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen(modifier = Modifier)
 }

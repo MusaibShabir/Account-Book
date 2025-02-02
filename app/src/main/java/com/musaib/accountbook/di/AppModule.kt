@@ -1,21 +1,22 @@
 package com.musaib.accountbook.di
 
+import android.content.Context
 import com.musaib.accountbook.data.AppDatabase
-import com.musaib.accountbook.data.TransactionDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseModule {
+object AppModule {
 
     @Provides
     @Singleton
-    fun provideTransactionDao(db: AppDatabase): TransactionDao {
-        return db.transactionDao()
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return AppDatabase.getDatabase(context)
     }
 }
-
