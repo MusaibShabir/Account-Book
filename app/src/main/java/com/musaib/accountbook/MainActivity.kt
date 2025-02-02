@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.ui.Modifier
+import com.musaib.accountbook.presentation.screens.home.HomeScreen
 import com.musaib.accountbook.ui.theme.AccountBookTheme
 
 class MainActivity : ComponentActivity() {
@@ -12,7 +14,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AccountBookTheme {
+                HomeScreen(
+                    Modifier,
+                    viewModel = viewModel()
 
+                )
             }
         }
     }

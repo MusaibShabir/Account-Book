@@ -33,32 +33,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.musaib.accountbook.data.TransactionViewModel
 import com.musaib.accountbook.presentation.screens.customer.components.CustomerHeadCashRow
 import com.musaib.accountbook.presentation.screens.customer.components.ProfileEntryRow
 import com.musaib.accountbook.ui.theme.MainGreen
 import com.musaib.accountbook.ui.theme.MainRed
-import java.util.Date
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomerProfileScreen(
     modifier: Modifier = Modifier,
-    profileName: String
+    profileName: String,
+    viewModel: TransactionViewModel // Add ViewModel parameter
 ) {
     Scaffold(
-        modifier = modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        text = profileName
-                    )
-                },
+                title = { Text(text = profileName) },
                 navigationIcon = {
                     Icon(
-                        imageVector = Icons. AutoMirrored.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "back",
                         modifier = Modifier.size(18.dp)
                     )
@@ -66,51 +61,28 @@ fun CustomerProfileScreen(
             )
         },
         bottomBar = {
-
-            BottomAppBar(
-                containerColor = Color.Transparent
-            ){
+            BottomAppBar(containerColor = Color.Transparent) {
                 Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Max),
+                    modifier = modifier.fillMaxWidth().height(IntrinsicSize.Max),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
-                ){
-
+                ) {
                     Button(
                         onClick = {},
-                        modifier = modifier
-                            .weight(3f)
-                            .padding(8.dp),
+                        modifier = modifier.weight(3f).padding(8.dp),
                         shape = RoundedCornerShape(corner = CornerSize(8.dp)),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MainRed
-                        )
+                        colors = ButtonDefaults.buttonColors(containerColor = MainRed)
                     ) {
-                        Text(
-                            text = "YOU GAVE ₹",
-                            fontWeight = FontWeight.Medium,
-
-                        )
+                        Text(text = "YOU GAVE ₹", fontWeight = FontWeight.Medium)
                     }
-                    Spacer(modifier.width(12.dp))
-
+                    Spacer(modifier = Modifier.width(12.dp))
                     Button(
                         onClick = {},
-                        modifier = modifier
-                            .weight(3f)
-                            .padding(8.dp),
+                        modifier = modifier.weight(3f).padding(8.dp),
                         shape = RoundedCornerShape(corner = CornerSize(8.dp)),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MainGreen
-                        )
+                        colors = ButtonDefaults.buttonColors(containerColor = MainGreen)
                     ) {
-                        Text(
-                            text = "YOU GOT ₹",
-                            fontWeight = FontWeight.Medium,
-
-                            )
+                        Text(text = "YOU GOT ₹", fontWeight = FontWeight.Medium)
                     }
                 }
             }
@@ -120,38 +92,24 @@ fun CustomerProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(18.dp),
+                .padding(18.dp)
         ) {
-            ElevatedCard (
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Max),
-                colors = CardDefaults.elevatedCardColors(
-                    containerColor = Color.White
-                ),
+            ElevatedCard(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
+                colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
             ) {
-                CustomerHeadCashRow(
-                    preFixText = "You will get",
-                    endCash = "$ 7337"
-                )
-
+                CustomerHeadCashRow(preFixText = "You will get", endCash = "$ 7337")
             }
 
             HorizontalDivider(
                 thickness = .5.dp,
                 color = Color.Black,
-                modifier = modifier.padding(vertical = 18.dp),
+                modifier = Modifier.padding(vertical = 18.dp),
             )
 
-            ProfileEntryRow(
-                modifier = modifier,
-                date = Date(),
-                time = Date(),
-                entryAmount = 300,
-                entryType = 1,
-                entryDescription = "Cash"
-            )
+            // Pass ViewModel to ProfileEntryRow
+            ProfileEntryRow(modifier = modifier, viewModel = viewModel)
         }
     }
 }

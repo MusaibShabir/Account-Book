@@ -28,13 +28,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.musaib.accountbook.data.TransactionViewModel
 import com.musaib.accountbook.presentation.screens.home.components.CashRow
 import com.musaib.accountbook.presentation.screens.home.components.CustomerColumn
 
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: TransactionViewModel
 ) {
     Scaffold(
         modifier = modifier
