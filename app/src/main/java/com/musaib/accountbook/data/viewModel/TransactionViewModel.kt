@@ -2,7 +2,7 @@ package com.musaib.accountbook.data.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.musaib.accountbook.data.Transaction
+import com.musaib.accountbook.data.tables.Transaction
 import com.musaib.accountbook.data.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

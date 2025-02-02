@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.musaib.accountbook.data.viewModel.CustomerViewModel
 import com.musaib.accountbook.data.viewModel.TransactionViewModel
 import com.musaib.accountbook.navigation.NavRoutes
 import com.musaib.accountbook.presentation.screens.customer.CustomerTransactionScreen
@@ -37,6 +38,7 @@ fun MainScreen(modifier: Modifier) {
     val currentRoute = currentRoute(navController)
 
     // ViewModels Instances
+    val customerViewModel: CustomerViewModel = hiltViewModel()
     val transactionViewModel: TransactionViewModel = hiltViewModel()
 
     Scaffold{innerPadding ->
@@ -51,7 +53,8 @@ fun MainScreen(modifier: Modifier) {
             composable(NavRoutes.HOME) {
                 HomeScreen(
                     modifier = modifier,
-                    navController = navController
+                    navController = navController,
+                    viewModel = customerViewModel
                 )
             }
 
@@ -65,7 +68,8 @@ fun MainScreen(modifier: Modifier) {
             composable(NavRoutes.ADD_CUSTOMER) {
                 AddNewCustomer(
                     modifier = modifier,
-                    navController = navController
+                    navController = navController,
+                    viewModel = customerViewModel
                 )
             }
 

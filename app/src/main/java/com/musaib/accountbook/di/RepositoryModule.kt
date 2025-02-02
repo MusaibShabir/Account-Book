@@ -1,6 +1,8 @@
 package com.musaib.accountbook.di
 
 import android.content.Context
+import com.musaib.accountbook.data.CustomerDao
+import com.musaib.accountbook.data.CustomerRepository
 import com.musaib.accountbook.data.TransactionDao
 import com.musaib.accountbook.data.TransactionRepository
 import dagger.Module
@@ -21,6 +23,15 @@ object RepositoryModule {
         transactionDao: TransactionDao,
         @ApplicationContext context: Context
     ): TransactionRepository {
-        return TransactionRepository(transactionDao, context)
+        return TransactionRepository(transactionDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCustomerRepository(
+        customerDao: CustomerDao,
+        @ApplicationContext context: Context
+    ): CustomerRepository {
+        return CustomerRepository(customerDao)
     }
 }

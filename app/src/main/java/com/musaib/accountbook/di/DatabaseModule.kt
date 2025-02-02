@@ -1,6 +1,7 @@
 package com.musaib.accountbook.di
 
 import com.musaib.accountbook.data.AppDatabase
+import com.musaib.accountbook.data.CustomerDao
 import com.musaib.accountbook.data.TransactionDao
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,12 @@ object DatabaseModule {
     @Singleton
     fun provideTransactionDao(db: AppDatabase): TransactionDao {
         return db.transactionDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCustomerDao(db: AppDatabase): CustomerDao {
+        return db.customerDao()
     }
 }
 

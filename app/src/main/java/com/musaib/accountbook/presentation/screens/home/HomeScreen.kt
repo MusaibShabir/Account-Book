@@ -22,12 +22,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.musaib.accountbook.data.viewModel.CustomerViewModel
 import com.musaib.accountbook.navigation.NavRoutes
 import com.musaib.accountbook.presentation.screens.home.components.CashRow
 import com.musaib.accountbook.presentation.screens.home.components.CustomerColumn
@@ -36,8 +39,11 @@ import com.musaib.accountbook.presentation.screens.home.components.CustomerColum
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    viewModel: CustomerViewModel
 ) {
+
+    val customers by viewModel.allCustomers.collectAsState(initial = emptyList())
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
@@ -96,7 +102,12 @@ fun HomeScreen(
                 modifier = modifier.padding(vertical = 18.dp),
             )
 
-            CustomerColumn(modifier = modifier)
+            CustomerColumn(customers = customers) { customerId ->
+                // Handle customer click here
+                // For example, navigate to a customer details screen
+                navController.navigate(NavRoutes.CUSTOMER_TRANSACTION)
+            }
         }
     }
+
 }

@@ -1,12 +1,11 @@
 package com.musaib.accountbook.data
 
-import android.content.Context
+import com.musaib.accountbook.data.tables.Transaction
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class TransactionRepository @Inject constructor(
     private val transactionDao: TransactionDao,
-    private val context: Context
 ) {
     fun getAllTransactions(): Flow<List<Transaction>> {
         return transactionDao.getAllTransactions()
