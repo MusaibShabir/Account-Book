@@ -38,7 +38,7 @@ fun ProfileEntryRow(
     modifier: Modifier = Modifier,
     viewModel: TransactionViewModel // Pass ViewModel here
 ) {
-    val transactions by viewModel.allTransactions.collectAsState() // Collect the state here
+    val transactions by viewModel.transactionsByCustomer.collectAsState() // Collect the state here
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,

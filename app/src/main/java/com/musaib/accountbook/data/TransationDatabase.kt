@@ -26,7 +26,8 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "transaction_database"
                 )
-                    .addMigrations(MIGRATION_1_2)  // ✅ Add migration
+                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_2_3)
                     .build()
                 INSTANCE = instance
                 instance
@@ -34,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // ✅ Define Migration from Version 1 to 2
-        val MIGRATION_1_2 = object : Migration(1, 2) {
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // Add new "customers" table
                 database.execSQL(
@@ -43,6 +44,13 @@ abstract class AppDatabase : RoomDatabase() {
                             "name TEXT NOT NULL, " +
                             "phone TEXT NOT NULL)"
                 )
+            }
+        }
+
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Adding "type" column to "transactions" table
+                database.execSQL("ALTER TABLE transactions ADD COLUMN type INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

@@ -14,4 +14,8 @@ class TransactionRepository @Inject constructor(
     suspend fun insertTransaction(transaction: Transaction) {
         transactionDao.insertTransaction(transaction)
     }
+
+    fun getAllTransactionsByCustomerId(customerId: Int): Flow<List<Transaction>> {
+        return transactionDao.getTransactionsByCustomerId(customerId)
+    }
 }

@@ -61,7 +61,9 @@ fun MainScreen(modifier: Modifier) {
             composable(NavRoutes.CUSTOMER_TRANSACTION) {
                 CustomerTransactionScreen(
                     modifier = modifier,
-                    viewModel = transactionViewModel,
+                    customerViewModel = customerViewModel,
+                    transactionViewModel = transactionViewModel,
+                    navController = navController
                 )
             }
 
@@ -76,8 +78,9 @@ fun MainScreen(modifier: Modifier) {
             composable(NavRoutes.ADD_AMOUNT) {
                 EnterAmountScreen(
                     modifier = modifier,
-                    profileName = "Musaib",
-                    entryType = 1
+                    navController = navController,
+                    transactionViewModel = transactionViewModel,
+                    customerViewModel = customerViewModel
                 )
             }
 

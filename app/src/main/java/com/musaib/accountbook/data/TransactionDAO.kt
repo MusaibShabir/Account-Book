@@ -15,7 +15,7 @@ interface TransactionDao {
     suspend fun insertTransaction(transaction: Transaction)
 
     @Query("SELECT * FROM transactions WHERE customerId = :customerId")
-    suspend fun getTransactionsByCustomerId(customerId: Int): List<Transaction>
+    fun getTransactionsByCustomerId(customerId: Int): Flow<List<Transaction>>
 
     @Query("SELECT SUM(amount) FROM transactions WHERE customerId = :customerId")
     suspend fun getTotalAmountForCustomer(customerId: Int): Double

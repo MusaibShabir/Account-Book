@@ -20,6 +20,7 @@ import androidx.room.PrimaryKey
 data class Transaction(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val amount: Double,
+    val type: Int, // Newly Added
     val description: String,
     val date: String,
     val time: String,

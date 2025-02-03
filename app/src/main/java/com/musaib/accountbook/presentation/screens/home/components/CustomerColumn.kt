@@ -2,6 +2,7 @@ package com.musaib.accountbook.presentation.screens.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,13 +22,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.musaib.accountbook.currentRoute
 import com.musaib.accountbook.data.tables.Customer
+import com.musaib.accountbook.ui.theme.MainGreen
+import com.musaib.accountbook.ui.theme.MainRed
 
 @Composable
 fun CustomerColumn(
     customers: List<Customer>,
-    onCustomerClick: (Int) -> Unit
+    onCustomerClick: (Int) -> Unit,
+    cardType: Int = 0
 ) {
+    val typeColor = when (cardType) {
+        0 -> MainRed
+        1 -> MainGreen
+        else -> {Color.Black}
+    }
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,7 +46,11 @@ fun CustomerColumn(
             items = customers,
             key = { it.id }
         ) { customer ->
-            CustomerCard(customer = customer, onCustomerClick = onCustomerClick)
+            CustomerCard(
+                customer = customer,
+                onCustomerClick = { onCustomerClick(customer.id) },
+                amountColor = typeColor
+            )
         }
     }
 }
@@ -44,13 +58,14 @@ fun CustomerColumn(
 @Composable
 fun CustomerCard(
     customer: Customer,
-    onCustomerClick: (Int) -> Unit
+    onCustomerClick: () -> Unit,
+    amountColor: Color
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 18.dp)
-            .clickable { onCustomerClick(customer.id) },
+            .padding(vertical = 8.dp)
+            .clickable { onCustomerClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -59,16 +74,24 @@ fun CustomerCard(
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
-                Text(
-                    text = customer.name,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.Black
-                )
-            }
+
+            Text(
+                text = customer.name,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black
+            )
+
+            Text(
+                text = "₹ 7323",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = amountColor
+            )
+
         }
     }
 }
@@ -84,7 +107,6 @@ fun CustomerColumnPreview() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
         Text(text = "Customers")
         CustomerColumn(customers = customers, onCustomerClick = {})

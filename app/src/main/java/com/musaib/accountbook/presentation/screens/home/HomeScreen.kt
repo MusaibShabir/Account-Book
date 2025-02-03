@@ -1,5 +1,6 @@
 package com.musaib.accountbook.presentation.screens.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -35,7 +36,7 @@ import com.musaib.accountbook.navigation.NavRoutes
 import com.musaib.accountbook.presentation.screens.home.components.CashRow
 import com.musaib.accountbook.presentation.screens.home.components.CustomerColumn
 
-
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -46,7 +47,9 @@ fun HomeScreen(
     val customers by viewModel.allCustomers.collectAsState(initial = emptyList())
     Scaffold(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            ,
+
         floatingActionButton = {
 
             FloatingActionButton(
@@ -76,11 +79,10 @@ fun HomeScreen(
             }
         },
         floatingActionButtonPosition = FabPosition.End
-    ) { paddingValues ->
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
                 .padding(18.dp),
         ) {
             ElevatedCard (
@@ -102,11 +104,14 @@ fun HomeScreen(
                 modifier = modifier.padding(vertical = 18.dp),
             )
 
-            CustomerColumn(customers = customers) { customerId ->
-                // Handle customer click here
-                // For example, navigate to a customer details screen
-                navController.navigate(NavRoutes.CUSTOMER_TRANSACTION)
-            }
+            CustomerColumn(
+                customers = customers,
+                onCustomerClick = { customerId ->
+                    viewModel.setSelectedCustomerId(customerId)
+                    navController.navigate(NavRoutes.CUSTOMER_TRANSACTION)
+                },
+                cardType = 0
+            )
         }
     }
 

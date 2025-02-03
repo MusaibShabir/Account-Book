@@ -37,6 +37,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,25 +49,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.musaib.accountbook.data.viewModel.CustomerViewModel
+import com.musaib.accountbook.data.viewModel.TransactionViewModel
 import com.musaib.accountbook.ui.theme.MainGreen
 import com.musaib.accountbook.ui.theme.MainRed
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import kotlin.text.format
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EnterAmountScreen(
     modifier: Modifier = Modifier,
-    profileName: String,
-    entryType: Int,
+    navController: NavController,
+    transactionViewModel: TransactionViewModel,
+    customerViewModel: CustomerViewModel
 ) {
-    // Entry Color
-    var entryColor = when (entryType) {
+
+    val transactionType = transactionViewModel.selectedTransactionType.collectAsState().value
+    val customerId = customerViewModel.selectedCustomerId.collectAsState().value
+
+    var amount by remember { mutableStateOf("") }
+    var entryDescription by rememberSaveable { mutableStateOf("") }
+
+    val entryColor = when (transactionType) {
         1 -> MainGreen // Green color for type 1
         0 -> MainRed // Red color for type 0
         else -> Color.Gray // Default color if entryType is neither 1 nor 0
@@ -75,7 +89,7 @@ fun EnterAmountScreen(
     // Date Logic
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDateMillis by remember { mutableStateOf<Long?>(null) }
-    var selectedDateString by remember { mutableStateOf("") }
+
 
     val noFutureDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
@@ -121,7 +135,41 @@ fun EnterAmountScreen(
                 ){
 
                     Button(
-                        onClick = {},
+                        onClick = {
+                            // Validate amount and customerId
+                            val amountDouble = amount.toDoubleOrNull()
+                            if (amountDouble != null && customerId != null) {
+                                // Get current time
+                                val currentTime = LocalTime.now()
+                                val formattedTime: String = currentTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))
+                                // Get selected date or current date
+                                val date = if (datePickerState.selectedDateMillis != null) {
+                                    val selectedDate = Instant.ofEpochMilli(datePickerState.selectedDateMillis!!)
+                                        .atZone(ZoneId.systemDefault())
+                                        .toLocalDate()
+                                    selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+                                } else {
+                                    LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE)
+                                }
+
+                                // Insert transaction
+                                if (transactionType != null) {
+                                    transactionViewModel.insertTransaction(
+                                        amount = amountDouble,
+                                        description = entryDescription,
+                                        date = date,
+                                        time = formattedTime,
+                                        customerId = customerId,
+                                        type = transactionType
+                                    )
+                                }
+
+                                // Navigate back
+                                navController.popBackStack()
+                            } else {
+                                // Handle invalid amount or missing customerId
+                            }
+                        },
                         modifier = modifier
                             .weight(1f)
                             .padding(8.dp),
@@ -145,9 +193,6 @@ fun EnterAmountScreen(
                 .padding(paddingValues)
                 .padding(18.dp),
         ) {
-
-            var amount by rememberSaveable { mutableStateOf("") }
-
             OutlinedTextField(
                 modifier = modifier
                     .fillMaxWidth(),
@@ -197,8 +242,6 @@ fun EnterAmountScreen(
                 color = Color.Black,
                 modifier = modifier.padding(vertical = 18.dp),
             )
-
-            var entryDescription by rememberSaveable { mutableStateOf("") }
 
             OutlinedTextField(
                 modifier = modifier
@@ -285,12 +328,3 @@ fun EnterAmountScreen(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewCustomerProfileScreen() {
-    EnterAmountScreen(
-        modifier = Modifier,
-        profileName = "Musaib Shabir",
-        entryType = 1
-    )
-}
