@@ -38,21 +38,32 @@ fun ProfileEntryRow(
     modifier: Modifier = Modifier,
     viewModel: TransactionViewModel // Pass ViewModel here
 ) {
-    val transactions by viewModel.transactionsByCustomer.collectAsState() // Collect the state here
+    val transactions by viewModel.transactionsByCustomer.collectAsState()
     LazyColumn(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
         // Ensure you are passing the List directly
         items(transactions) { transaction -> // items expects a List, so pass the list of transactions
+
+            val colorType = when (transaction.type) {
+                0 -> MainRed
+                1 -> MainGreen
+                else -> Color.Gray
+            }
             OutlinedCard(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                ,
                 shape = RoundedCornerShape(corner = CornerSize(8.dp)),
-                colors = CardDefaults.outlinedCardColors(),
+                colors = CardDefaults.outlinedCardColors(containerColor = Color.White),
                 border = BorderStroke(
                     width = .5.dp,
-                    color = if (transaction.amount >= 0) MainGreen else MainRed
+                    color = colorType
                 ),
                 elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
             ) {
@@ -102,8 +113,8 @@ fun ProfileEntryRow(
                         text = "₹ ${transaction.amount}",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = if (transaction.amount >= 0) MainGreen else MainRed,
-                        modifier = Modifier
+                        color = colorType,
+                        modifier = modifier
                             .weight(1f)
                             .padding(start = 8.dp),
                         textAlign = TextAlign.End
